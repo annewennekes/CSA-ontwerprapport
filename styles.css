@@ -1,0 +1,703 @@
+:root{
+    --bg: #1e1e31;
+    --ink: #f6f6f6;
+    --muted:#c9c9cf;
+    --accent:#8cf0ff;
+    --radius: 18px;
+    --shadow: 0 10px 30px rgba(0,0,0,.35);
+    --speed: .6s;
+    --easing: cubic-bezier(.2,.8,.2,1);
+	--logo-top: 10vh;          /* matches .logo-wrapper { top: 10vh } */
+	--logo-height: 30vh;       /* matches .logo-wrapper { height: 30vh } */
+	--gap-below-logo: 6vh;     /* extra breathing room below the logo */
+    scroll-behavior: smooth;
+
+  }
+
+  /* Page frame */
+  body {
+    margin: 0;
+    font-family: sans-serif;
+    min-heigh: 100vh;
+    /*height: 300vh; /* extra space for scrolling */
+    background: url('images/background_dark.png') no-repeat center center fixed;
+    color: white;
+	}
+
+/* ── Scroll Progress Bar ───────────────────── */
+.scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  width: 0%;
+  height: 3px;
+  background: #5dacd8;
+  z-index: 200;
+  transition: width 0.05s linear;
+}
+
+  /* ── Navigation ─────────────────────────────── */
+.site-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 clamp(16px, 3vw, 40px);
+  height: 56px;
+  background: rgba(30, 30, 49, 0.72);       
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(140, 240, 255, 0.08); 
+}
+
+.site-nav__logo {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.site-nav__links {
+  display: flex;
+  gap: clamp(20px, 3vw, 40px);
+  list-style: none;
+  margin: 0; padding: 0;
+}
+
+.site-nav__links a {
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+.site-nav__links a:hover,
+.site-nav__links a[aria-current="page"] {
+  color: var(--accent);        /* cyan highlight, matches your tags */
+}
+.site-nav[data-section="inleiding"] .site-nav__links a   { color: var(--accent); }   /* #8cf0ff cyan */
+.site-nav[data-section="context"] .site-nav__links a     { color: var(--muted); }    /* #c9c9cf light grey */
+.site-nav[data-section="functies"] .site-nav__links a    { color: #5dacd8; }         /* progress bar blue */
+.site-nav[data-section="criteria"] .site-nav__links a    { color: #5dacd8; }         /* button orange */
+.site-nav[data-section="concept"] .site-nav__links a     { color: var(--accent); }   /* #8cf0ff cyan */
+.site-nav[data-section="ontwerp"] .site-nav__links a     { color: #5dacd8; }         /* progress bar blue */
+.site-nav[data-section="elearning"] .site-nav__links a   { color: #5dacd8; }         /* button orange */
+.site-nav[data-section="prototype"] .site-nav__links a   { color: var(--muted); }    /* #c9c9cf light grey */
+.site-nav[data-section="conclusie"] .site-nav__links a   { color: var(--accent); }   /* #8cf0ff cyan */
+.site-nav[data-section="aanbevelingen"] .site-nav__links a { color: #5dacd8; }       /* button orange */
+.site-nav[data-section="bronnen"] .site-nav__links a     { color: #5dacd8; }         /* progress bar blue */
+
+/* keep the currently active link always in --ink (white) so it stands out */
+.site-nav__links a[aria-current="page"] {
+  color: var(--ink) !important;
+}
+
+.site-nav__cta {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 8px 18px;
+  border-radius: 999px;        /* pill — same as your .tag */
+  background: var(--accent);
+  color: #001016;
+  text-decoration: none;
+  transition: opacity 0.25s ease;
+}
+
+.site-nav__cta:hover { opacity: 0.85; }
+
+.grid, .below-cards, .horizontal-section { scroll-margin-top: 72px; }
+#inleiding,
+#context,
+#functies,
+#criteria,
+#concept,
+#ontwerp,
+#elearning,
+#prototype,
+#conclusie,
+#aanbevelingen,
+#bronnen, {
+  scroll-margin-top: 72px;
+}
+/* Centers the logo perfectly in the viewport initially */
+.logo-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Only this element is sticky */
+.logo-wrapper {
+    position: sticky;
+    top: 20vh;        /* how high it stays once scrolling starts */
+    pointer-events: none;
+}
+
+
+  svg {
+    width: 60vw;
+    height: auto;
+    overflow: visible;
+  }
+ 
+/* Header: centered */
+header{
+margin-block-start: calc(var(--logo-top) + var(--logo-height) + var(--gap-below-logo));
+  padding: clamp(16px, 3vw, 40px);
+  display: grid;
+  place-items: center;   /* centers horizontally + vertically */
+  text-align: center;    /* center headings/paragraphs */
+  gap: .5rem;
+}
+header h1{
+  font-size: clamp(20px, 2.6vw, 36px);
+  margin: 0;
+  letter-spacing: .2px;
+}
+header p{
+  margin: 6px 0 0;
+  color: var(--muted);
+  max-width: 70ch;       /* nicer line-length */
+}
+
+h2 {
+  font-size: clamp(16px, 2vw, 28px);
+  margin: 0 0 12px;
+  text-align: center;
+}
+
+.wrapper{
+	display: flex;
+	position: relative;
+	top: 0;
+	left: 0;
+	height: 100vh;
+	animation: slide auto linear;
+	animation-timeline: scroll ();
+}
+
+figure{
+	margin: 0;
+	position: relative;
+	flex-grow: 0;
+	flex-shrink: 0;
+	flex-basis: 100vh;
+}
+
+figcaption {
+  padding: 10px 14px;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+img{
+	width: 100%;
+	object-fit: cover;
+}
+
+.container{
+	background: #1e1e31, 0.5;
+	min-height: 100vh;
+}
+
+@keyframes slide{
+	0%{
+		transform: translateX(0);
+	}
+	100%{
+		transform: translateX(calc(-100% - 100vw));
+	}
+}
+  /* Grid */
+  .grid{
+    display:grid;
+    gap: clamp(14px, 2vw, 28px);
+    padding: clamp(16px, 3vw, 40px);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+    perspective: 1200px; /* enables 3D transforms on children */
+  }
+
+  /* Card */
+  .card{
+    position:relative;
+    border-radius: var(--radius);
+    overflow:hidden;
+    background:#161618;
+    aspect-ratio: 1 / 1;   /* ← square */
+    min-height: unset;      /* ← let aspect-ratio control height */
+    box-shadow: var(--shadow);
+    transform-style: preserve-3d;
+    transition:
+      transform var(--speed) var(--easing),
+      box-shadow var(--speed) var(--easing);
+    will-change: transform;
+    outline: none;
+  }
+
+  /* “Lift” on hover/focus (touch devices will just see a subtle scale) */
+  .card:hover,
+  .card:focus-visible{
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 18px 40px rgba(0,0,0,.45);
+  }
+
+  /* Media layer (image/video) */
+  .card__media{
+    position:absolute; inset:0;
+    z-index:0;
+  }
+  .card__media img,
+  .card__media video{
+    width:100%; height:100%; object-fit:cover; display:block;
+    transform: translateZ(-40px) scale(1.08); /* subtle parallax depth */
+    transition: transform var(--speed) var(--easing), filter var(--speed) var(--easing);
+    filter: saturate(0.9) brightness(0.9);
+  }
+  .card:hover .card__media img,
+  .card:hover .card__media video,
+  .card:focus-visible .card__media img,
+  .card:focus-visible .card__media video{
+    filter: saturate(1) brightness(1);
+    transform: translateZ(-40px) scale(1.12);
+  }
+
+  /* Gradient overlay to keep text readable */
+  .card__overlay{
+    position:absolute; inset:0;
+    background:
+      linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,.55) 75%),
+      radial-gradient(120% 120% at 50% 100%, rgba(0,0,0,.6) 0%, rgba(0,0,0,0) 60%);
+    z-index:1;
+    pointer-events:none;
+  }
+
+  /* Content */
+  .card__content{
+    position:absolute; inset:0; z-index:2;
+    display:flex; flex-direction:column; justify-content:flex-end;
+    padding: 18px;
+    gap:10px;
+    transform: translateZ(0); /* content sits above media */
+  }
+  .tag{
+    align-self:flex-start;
+    font-size:12px; letter-spacing:.4px; text-transform:uppercase;
+    padding:6px 10px;
+    border-radius: 999px;
+    color:#001016; background: var(--accent);
+    transform: translateZ(20px);
+    text-align: center;
+  }
+  .title{
+    font-weight:700; font-size: clamp(18px, 1.2rem, 24px);
+    margin:0;
+    text-align: center;
+  }
+  .subtitle{
+    margin:0; color:var(--muted); font-size: 14px; text-align: center;
+  }
+
+  /* Subtle “shine” on hover */
+  .shine{
+    position:absolute; inset:-200%;
+    background:
+      radial-gradient(220px 220px at var(--mx,50%) var(--my,50%), rgba(255,255,255,.12), transparent 60%);
+    mix-blend-mode: screen;
+    z-index:3; pointer-events:none;
+    transition: opacity .35s var(--easing);
+    opacity:0;
+  }
+  .card:hover .shine, .card:focus-visible .shine{ opacity:1 }
+
+  /* Link covers card */
+  .stretched-link{
+    position:absolute; inset:0; z-index:4;
+    border: 0; background: none; color: inherit;
+    cursor: pointer;
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce){
+    .card, .card *{ transition: none !important; animation: none !important }
+    .card{ transform: none !important }
+    .card__media img, .card__media video{ transform: none !important }
+  }
+  
+  
+/* Section below the cards */
+.below-cards{
+  padding: clamp(16px, 3vw, 40px);
+  text-align: center;
+  color: var(--ink);
+  margin-block-start: clamp(28px, 6vh, 72px); /* space above the title */
+}
+
+.below-cards__title{
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: 0.08em;                 /* wide “case study” vibe */
+  font-size: clamp(28px, 6vw, 72px);      /* scales with viewport */
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+  
+    /* Center the SVG on screen, pinned while scrolling */
+  .logo-wrapper {
+    position: sticky;
+    top: 10vh;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+    height: 30vh;
+  }
+
+  svg {
+    width: 60vw;
+    height: auto;
+    overflow: visible;
+  }
+  .st0 {
+        fill: #202b4f;
+      }
+
+      .st1 {
+        fill: #ed7e23;
+      }
+
+      .st2 {
+        fill: #5c5b5e;
+      }
+
+  /* ---- SCROLL‑DRIVEN TIMELINE ---- */
+  /* As documented on MDN: animation-timeline ties animation progress to scroll position */
+  /* https://developer.mozilla.org/en-US/docs/Web/CSS/animation-timeline */
+  .explode-part {
+    animation-duration: 0.5ms; /* ignored; timeline controls progress */
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: scroll(root block); /* scroll progress drives animation */
+  }
+
+  /* ---- KEYFRAMES ---- */
+  @keyframes explode-nw {
+    from { transform: translate(0,0); opacity: 1; }
+    to   { transform: translate(-100px,-100px); opacity: 0; }
+  }
+
+  @keyframes explode-ne {
+    from { transform: translate(0,0); opacity: 1; }
+    to   { transform: translate(100px,-100px); opacity: 0; }
+  }
+
+  @keyframes explode-s {
+    from { transform: translate(0,0); opacity: 1; }
+    to   { transform: translate(0,125px); opacity: 0; }
+  }
+
+  @keyframes explode-big {
+    from { transform: scale(1); opacity: 1; }
+    to   { transform: scale(1.8) rotate(40deg); opacity: 0; }
+  }
+
+  /* -------- Motion assignment classes -------- */
+  .m-nw { animation-name: explode-nw; }
+  .m-ne { animation-name: explode-ne; }
+  .m-s  { animation-name: explode-s; }
+  .m-big { animation-name: explode-big; }
+
+  /* Staggering effect: (animation-range is part of scroll-driven spec) */
+  .m-nw  { animation-range: 0% 15%; }
+  .m-ne  { animation-range: 5% 12%; }
+  .m-s   { animation-range: 4% 14%; }
+  .m-big { animation-range: 0% 8%; }
+  
+ 
+	.reveal-words span {
+	display:inline-block;
+	opacity:0;
+	transform: translateY(14px);
+}
+
+/* Keyframes for each piece */
+	@keyframes word-in {
+	from { opacity:0; transform: translateY(14px) }
+	to   { opacity:1; transform: none }
+}
+
+/* Progressive enhancement: only if scroll-driven is supported */
+@supports ((animation-timeline: scroll()) and (animation-range: 0% 100%)) {
+  .reveal-words {
+    /* Attach a view progress timeline so the animation runs as the element enters the viewport */
+    animation-timeline: view(); /* or scroll(root) for page progress */
+  }
+  .reveal-words span {
+    animation: word-in linear both;
+    /* stagger via custom properties */
+    --i: 0;
+    animation-range: entry calc(0% + var(--i)*6%) entry calc(20% + var(--i)*6%);
+  }
+  .reveal-words span:nth-child(1){ --i: 0 }
+  .reveal-words span:nth-child(2){ --i: 1 }
+  .reveal-words span:nth-child(3){ --i: 2 }
+}
+
+/* Fallback: show immediately if unsupported */
+@supports not (animation-timeline: scroll()) {
+  .reveal-words span { opacity:1; transform:none }
+}
+
+.mask-reveal {
+  --reveal: 0%; /* 0 → 100 */
+  background:
+    linear-gradient(#fff 0 0) no-repeat 0 100% / 100% 1px; /* underline */
+  -webkit-mask-image: linear-gradient(#000 0 0);
+  mask-image: linear-gradient(#000 0 0);
+  -webkit-mask-size: 100% var(--reveal);
+  mask-size: 100% var(--reveal);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+/* Drive the --reveal with scroll (CSS) or JS (GSAP) */
+@supports (animation-timeline: scroll()) {
+  @keyframes wipe { from { --reveal: 0% } to { --reveal: 100% } }
+  .mask-reveal {
+    animation: wipe linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 100%;
+  }
+}
+
+
+.below-cards {
+    opacity: 0;
+    transform: scale(.96);
+    animation: fade-in linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
+}
+
+@keyframes fade-in {
+    from { opacity: 0; transform: scale(.65); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+
+/* 1. The entire section becomes tall enough to allow scrolling */
+.horizontal-section {
+  height: 300vh; /* adjust depending on number of slides */
+  position: relative;
+}
+
+/* 2. This stays fixed while scrolling */
+.horizontal-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+/* 3. This long horizontal track moves as the user scrolls */
+.horizontal-track {
+  display: flex;
+  gap: 2rem;
+  width: max-content;
+  height: 80vh;
+  padding: 0 10vw;
+  transform: translateX(0);
+  will-change: transform;
+}
+
+.horizontal-track img {
+  height: 80vh;
+  object-fit: cover;
+}
+
+
+.carousel {
+	margin: 100px auto;
+	width: 90%;
+	display: flex;
+	overflow-x: auto;
+	
+}
+
+.carousel::-webkit-scrollbar {
+	display: none;
+}
+
+.group {
+	display: flex;
+	align-itmes: center;
+	justify-content: center;
+	gap: 1em;
+	animation: spin 25s infinite linear;
+	padding-right: 1em;
+}
+
+.corp {
+	flex: 0 0 5em;
+	height: 5em;
+	padding: 1em;
+	background: #5dacd8;
+	font-size: 3rem;
+	border-radius: .2em;
+	text-align: center;
+	align-content: center;
+}
+
+@keyframes spin{
+	from {translate: 0;}
+	to {translate: -100%;}
+}
+
+.contact{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding-bottom: 50px;
+}
+
+footer {
+	background: #5c5a5e;
+	padding: 50px;
+}
+
+/* Center both images and control their size */
+.nedconlogo {
+  display: flex;
+  flex-direction: column;        /* stack vertically */
+  align-items: center;           /* center horizontally */
+  justify-content: center;       /* center vertically (if footer has height) */
+  gap: 5px;                     /* space between the two images */
+  padding: 10px 0;               /* breathing room inside footer */
+}
+
+
+/* Make both images smaller and responsive */
+.nedconlogo img {
+  width: clamp(140px, 28vw, 240px);  /* scale nicely across screens */
+  height: auto;
+}
+
+button {
+	display: block;
+	--glow-color: rgb(252, 171, 104);
+	--glow-spread-color: rgb(237, 126, 35, 0.781);
+	--enhanced-glow-color: rgb(250, 192, 145);
+	--btn-color: rgb(237, 126, 35);
+	border: 0.25em solid var(--glow-color);
+	padding: 1em 3em;
+	margin: 24px auto 250px;
+	color: var(--glow-color);
+	font-size: 38px;
+	font-weight: bold;
+	background-color: var(--btn-color);
+	border-radius: 1em;
+	outline: none;
+	box-shadow: 0 0 1em 0.25em var(--glow-color),
+	0 0 4em 1em var(--glow-spread-color),
+	inset 0 0 0.75em 0.25em var(--glow-color);
+	text-shadow: 0 0 0.5em var(--glow-color);
+	position: relative;
+	transition: all 0.3s;
+}
+
+button::after {
+	pointer-events: none;
+	content:"";
+	position: absolute;
+	top: 120%;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background-color: var(--glow-spread-color);
+	filter: blur(2em);
+	opacity: 0.7;
+	transform: perspective(1.5em) rotateX(35deg) scale(1, 0.6);
+}
+
+button:hover {
+	color: var(--btn-color);
+	background-color: var(--glow-color);
+	box-shadow: 0 0 1em 0.25em var(--glow-color),
+	0 0 4em 2em var(--glow-spread-color),
+	inset 0 0 0.75em 0.25em var(--glow-color);
+}
+
+button:active {
+	box-shadow: 0 0 0.6em 0.25em var(--glow-color),
+	0 0 2.5em var(--glow-spread-color),
+	inset 0 0 0.5em 0.25em var(--glow-color);
+}
+
+p {
+  font-size: 18px; 
+  margin: 0 auto; 
+  width: fit-content; 
+  text-align: center; 
+  max-width: 800px; 
+  margin-bottom: 50px;
+}
+
+li {
+  font-size: 18px; 
+  margin: 0 auto; 
+  width: fit-content; 
+  text-align: center; 
+  max-width: 800px;
+}
+
+.split-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(24px, 4vw, 64px);
+  padding: clamp(16px, 3vw, 40px);
+  align-items: center;
+}
+
+.split-section__text {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  color: var(--ink);
+}
+
+.split-section__text h2 {
+  font-size: clamp(22px, 3vw, 42px);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.split-section__text p {
+  line-height: 1.7;
+  margin: 0;
+  text-align: center;
+}
+
+.split-section__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius);
+  display: block;
+}
+
+/* Stack vertically on mobile */
+@media (max-width: 768px) {
+  .split-section {
+    grid-template-columns: 1fr;
+  }
+}
