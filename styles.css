@@ -555,6 +555,7 @@ img{
 	border-radius: .2em;
 	text-align: center;
 	align-content: center;
+	max-height: 69px;
 }
 
 @keyframes spin{
