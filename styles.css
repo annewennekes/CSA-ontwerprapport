@@ -534,6 +534,12 @@ img{
 	
 }
 
+.carousel img {
+	max-height: 69px;
+	width: auto;
+	object-fit: contain;
+}
+
 .carousel::-webkit-scrollbar {
 	display: none;
 }
@@ -555,7 +561,6 @@ img{
 	border-radius: .2em;
 	text-align: center;
 	align-content: center;
-	max-height: 69px;
 }
 
 @keyframes spin{
