@@ -546,7 +546,7 @@ img{
 
 .group {
 	display: flex;
-	align-itmes: center;
+	align-items: center;
 	justify-content: center;
 	gap: 1em;
 	animation: spin 25s infinite linear;
